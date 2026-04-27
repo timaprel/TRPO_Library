@@ -1,11 +1,22 @@
 #pragma once
 #include <string>
+#include <vector>
+
 class Book
 {
 public:
-    Book(std::string title, std::string isbn);
+    Book(std::string title,
+         std::string isbn,
+         std::vector<std::string> authors,
+         int publicationYear);
+    const std::string &getTitle() const;
+    const std::string &getIsbn() const;
+    const std::vector<std::string> &getAuthors() const;
+    int getPublicationYear() const;
 
 private:
     std::string title_;
     std::string isbn_;
+    std::vector<std::string> authors_;
+    int publicationYear_;
 };
