@@ -1,5 +1,15 @@
 #include "Book.h"
 #include <utility>
+#include <stdexcept>
+#include <ctime>
+
+static int currentYear()
+{
+  std::time_t t = std::time(nullptr);
+  std::tm *now = std::localtime(&t);
+  return now->tm_year + 1900;
+}
+
 Book::Book(std::string title,
            std::string isbn,
            std::vector<std::string> authors,
@@ -7,7 +17,16 @@ Book::Book(std::string title,
     : title_(std::move(title)),
       isbn_(std::move(isbn)),
       authors_(std::move(authors)),
-      publicationYear_(publicationYear) {}
+      publicationYear_(publicationYear)
+{
+  if (isbn_.empty())
+    throw std::invalid_argument("ISBN is empty!");
+  if (authors_.empty())
+    throw std::invalid_argument("Authors list is empty");
+  if (publicationYear_ > currentYear())
+    throw std::invalid_argument("Publication year is invalid");
+}
+
 const std::string &Book::getTitle() const
 {
   return title_;
