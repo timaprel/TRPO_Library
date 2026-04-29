@@ -11,7 +11,7 @@ static int currentYear()
 }
 
 Book::Book(std::string title,
-           std::string isbn,
+           ISBN isbn,
            std::vector<std::string> authors,
            int publicationYear)
     : title_(std::move(title)),
@@ -19,7 +19,7 @@ Book::Book(std::string title,
       authors_(std::move(authors)),
       publicationYear_(publicationYear)
 {
-  if (isbn_.empty())
+  if (isbn_.value().empty())
     throw std::invalid_argument("ISBN is empty!");
   if (authors_.empty())
     throw std::invalid_argument("Authors list is empty");
@@ -33,7 +33,7 @@ const std::string &Book::getTitle() const
 }
 const std::string &Book::getIsbn() const
 {
-  return isbn_;
+  return isbn_.value();
 }
 const std::vector<std::string> &Book::getAuthors() const
 {

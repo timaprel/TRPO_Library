@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "isbn.h"
 
 class Book
 {
 public:
     Book(std::string title,
-         std::string isbn,
+         ISBN isbn,
          std::vector<std::string> authors,
          int publicationYear);
     const std::string &getTitle() const;
@@ -17,7 +18,7 @@ public:
 
 private:
     std::string title_;
-    std::string isbn_;
+    ISBN isbn_;
     std::vector<std::string> authors_;
     int publicationYear_;
 };
