@@ -13,6 +13,7 @@ public:
     const std::string &getIsbn() const;
     const std::vector<std::string> &getAuthors() const;
     int getPublicationYear() const;
+    bool Book::Kem_napisana_kniga(const std::string &author) const;
 
 private:
     std::string title_;

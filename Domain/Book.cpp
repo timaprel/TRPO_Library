@@ -43,3 +43,13 @@ int Book::getPublicationYear() const
 {
   return publicationYear_;
 }
+
+bool Book::Kem_napisana_kniga(const std::string &author) const
+{
+  for (const auto &all : authors_)
+  {
+    if (all == author)
+      return true;
+  }
+  return false;
+}
