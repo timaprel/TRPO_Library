@@ -53,3 +53,8 @@ bool Book::Kem_napisana_kniga(const std::string &author) const
   }
   return false;
 }
+
+std::string Book::getOpisanie() const
+{
+  return title_ + " (" + std::to_string(publicationYear_) + ")";
+}
