@@ -14,8 +14,10 @@ public:
         Closed
     };
 
-    Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy);
+    // Количество дней аренды по умолчанию
+    static constexpr int DefaultArendaDays = 30;
 
+    Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy);
     // Геттеры
     std::shared_ptr<Person> getPerson() const;
     std::shared_ptr<Copy> getCopy() const;
@@ -24,6 +26,7 @@ public:
 
     void close();
     std::chrono::system_clock::time_point getEndDate() const;
+    bool isOverdue() const;
 
 private:
     std::shared_ptr<Person> person_;

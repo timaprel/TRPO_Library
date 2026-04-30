@@ -55,3 +55,13 @@ std::chrono::system_clock::time_point Arenda::getEndDate() const
 {
     return endDate_;
 }
+
+bool Arenda::isOverdue() const
+{
+    if (status_ == ArendaStatus::Closed)
+        return false;
+
+    auto now = std::chrono::system_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::hours>(now - startDate_);
+    return duration.count() > 24 * DefaultArendaDays;
+}
