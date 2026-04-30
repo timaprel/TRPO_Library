@@ -7,7 +7,7 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
     : person_(person),
       copy_(copy),
       startDate_(std::chrono::system_clock::now()),
-      status_(ArendaStatus::Active) // статус активен при создании
+      status_(ArendaStatus::Active)
 {
     if (!person_)
         throw std::invalid_argument("Person cannot be null!");
@@ -15,6 +15,10 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
         throw std::invalid_argument("Copy cannot be null!");
     if (!person_->canTakeBooks())
         throw std::logic_error("Person cannot take books");
+    if (!copy_->isAvailable())
+        throw std::logic_error("Copy is not available");
+
+    copy_->markAsArenda(); // помечаем экземпляр как занятый
 }
 
 std::shared_ptr<Person> Arenda::getPerson() const
@@ -44,6 +48,7 @@ void Arenda::close()
 
     status_ = ArendaStatus::Closed;
     endDate_ = std::chrono::system_clock::now();
+    copy_->markAsVozvrat(); // возвращаем экземпляр в доступные
 }
 
 std::chrono::system_clock::time_point Arenda::getEndDate() const
