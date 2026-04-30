@@ -15,6 +15,7 @@ public:
     void addRole(std::shared_ptr<Role> role);
     bool hasRole(const std::string &roleName) const;
     void changeEmail(const std::string &newEmail);
+    bool canTakeBooks() const;   
 
 private:
     int id_;

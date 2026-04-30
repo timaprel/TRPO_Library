@@ -1,3 +1,6 @@
 #include "Role.h"
 
-// Абстрактный класс.
+bool Role::canTakeBooks() const
+{
+    return false; // по умолчанию роль не даёт права брать книги
+}
