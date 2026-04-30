@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <utility>
 
-Person::Person(int id, std::string fullName, std::string email)
+Person::Person(int id, std::string fullName, Email email)
     : id_(id),
       fullName_(std::move(fullName)),
       email_(std::move(email))
@@ -21,16 +21,14 @@ const std::string &Person::getFullName() const
     return fullName_;
 }
 
-const std::string &Person::getEmail() const
+const Email &Person::getEmail() const
 {
     return email_;
 }
 
-void Person::changeEmail(const std::string &newEmail)
+void Person::changeEmail(Email &newEmail)
 {
-    if (newEmail.empty())
-        throw std::invalid_argument("Email cannot be empty");
-    email_ = newEmail;
+    email_ = std::move(newEmail);
 }
 
 void Person::addRole(std::shared_ptr<Role> role)
