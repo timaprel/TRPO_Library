@@ -7,10 +7,9 @@ class Role
 public:
     virtual ~Role() = default;
     virtual std::string getName() const = 0;
-    virtual bool canTakeBooks() const;  
 };
 
-// Роль "Читатель" – может брать книги
+// Роль "Читатель"
 class ReaderRole : public Role
 {
 public:
@@ -18,24 +17,19 @@ public:
     {
         return "Reader";
     }
-    bool canTakeBooks() const override
-    {
-        return true;
-    }
 };
 
-// Роль "Библиотекарь" – по умолчанию НЕ может брать книги
-class LibrarianRole : public Role
+// Роль "Библиотекарь"
+class BibliotekarRole : public Role
 {
 public:
     std::string getName() const override
     {
-        return "Librarian";
+        return "Bibliotekar";
     }
-    // canTakeBooks() наследуется от Role (возвращает false)
 };
 
-// Роль "Администратор" – по умолчанию НЕ может брать книги
+// Роль "Администратор"
 class AdministratorRole : public Role
 {
 public:
@@ -43,5 +37,4 @@ public:
     {
         return "Administrator";
     }
-    // canTakeBooks() наследуется от Role (возвращает false)
 };
