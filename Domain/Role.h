@@ -45,3 +45,13 @@ public:
     }
     // canTakeBooks() наследуется от Role (возвращает false)
 };
+
+// Роль "Гость" – не может брать книги
+class GuestRole : public Role
+{
+public:
+    std::string getName() const override
+    {
+        return "Guest";
+    }
+};
