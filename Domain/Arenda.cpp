@@ -13,6 +13,8 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
         throw std::invalid_argument("Person cannot be null!");
     if (!copy_)
         throw std::invalid_argument("Copy cannot be null!");
+    if (!person_->canTakeBooks())
+        throw std::logic_error("Person cannot take books");
 }
 
 std::shared_ptr<Person> Arenda::getPerson() const
