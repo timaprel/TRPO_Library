@@ -69,3 +69,16 @@ int Person::getMaxArendaDays() const
     }
     return maxDays;
 }
+
+int Person::getMaxActiveArendas() const
+{
+    int maxActive = 0;
+    for (const auto &role : roles_)
+    {
+        if (role->canTakeBooks())
+        {
+            maxActive = std::max(maxActive, role->getMaxActiveArendas());
+        }
+    }
+    return maxActive;
+}

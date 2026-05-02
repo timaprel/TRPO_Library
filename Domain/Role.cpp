@@ -2,5 +2,10 @@
 
 bool Role::canTakeBooks() const
 {
-    return false; // по умолчанию роль не даёт права брать книги
+    return false;
+}
+
+int Role::getMaxActiveArendas() const
+{
+    return 0;
 }

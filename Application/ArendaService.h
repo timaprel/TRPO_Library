@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
 #include "../infrastructure/ArendaRepository.h"
-class ArendaService {
+class ArendaService
+{
 public:
- explicit
-ArendaService(std::shared_ptr<ArendaRepository>
-repository);
- void issueArenda(int personId, int copyId);
+    explicit ArendaService(std::shared_ptr<ArendaRepository> repository);
+    void issueArenda(int personId, int copyId);
+
 private:
- std::shared_ptr<ArendaRepository> repository_;
+    std::shared_ptr<ArendaRepository> repository_;
 };

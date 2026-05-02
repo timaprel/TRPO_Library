@@ -9,9 +9,9 @@ public:
     virtual std::string getName() const = 0;
     virtual bool canTakeBooks() const;
     virtual int getDefaultArendaDays() const = 0;
+    virtual int getMaxActiveArendas() const;
 };
 
-// Роль "Читатель" – может брать книги
 class ReaderRole : public Role
 {
 public:
@@ -27,9 +27,12 @@ public:
     {
         return 100;
     }
+    int getMaxActiveArendas() const override
+    {
+        return 10;
+    }
 };
 
-// Роль "Библиотекарь" – по умолчанию НЕ может брать книги
 class BibliotekarRole : public Role
 {
 public:
@@ -43,7 +46,6 @@ public:
     }
 };
 
-// Роль "Администратор" – по умолчанию НЕ может брать книги
 class AdministratorRole : public Role
 {
 public:
@@ -57,7 +59,6 @@ public:
     }
 };
 
-// Роль "Гость" – не может брать книги
 class GuestRole : public Role
 {
 public:
