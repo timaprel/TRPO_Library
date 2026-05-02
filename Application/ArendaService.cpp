@@ -2,44 +2,45 @@
 #include "../Domain/Arenda.h"
 #include "../Domain/Person.h"
 #include "../Domain/Copy.h"
+#include "../Domain/Role.h"
 #include <stdexcept>
-#include <vector>
 
-class ArendaService {
-public:
-    explicit ArendaService(std::shared_ptr<ArendaRepository> repository)
-        : repository_(repository) {}
+ArendaService::ArendaService(std::shared_ptr<ArendaRepository> repository)
+    : repository_(repository) {}
 
-    void issueArenda(int personId, int copyId) {
-        auto person = std::make_shared<Person>(personId, "Test User", Email("test@example.com"));
-        person->addRole(std::make_shared<ReaderRole>());
+std::shared_ptr<Arenda> ArendaService::createArenda(std::shared_ptr<Person> person,
+                                                    std::shared_ptr<Copy> copy)
+{
+    if (!person)
+        throw std::invalid_argument("Person is null");
+    if (!copy)
+        throw std::invalid_argument("Copy is null");
 
-        // 1. Проверить максимальное количество активных аренд
-        int maxActive = person->getMaxActiveArendas();
-        if (maxActive <= 0)
-            throw std::logic_error("Person has no right to rent books (maxActive = 0)");
+    if (person->hasOverdueArendas())
+        throw std::logic_error("User has overdue book/books!");
 
-        // 2. Подсчитать текущие активные аренды этого человека (храним в сервисе)
-        int currentActive = 0;
-        for (const auto& a : activeArendas_) {
-            if (a->isActive() && a->getPerson()->getId() == personId)
-                ++currentActive;
-        }
-        if (currentActive >= maxActive)
-            throw std::logic_error("Person already has maximum number of active rentals");
+    auto arenda = std::make_shared<Arenda>(person, copy);
 
-        // 3. Получить экземпляр книги (упрощённо – создаём новый Copy)
-        auto copy = std::make_shared<Copy>(copyId);
+    person->addArenda(arenda);
 
-        // 4. Создать аренду (конструктор проверит доступность копии, сроки и т.д.)
-        auto arenda = std::make_shared<Arenda>(person, copy);
+    repository_->save(arenda);
 
-        // 5. Сохранить в репозиторий и в локальный список активных аренд
-        repository_->save(arenda);
-        activeArendas_.push_back(arenda);
-    }
+    return arenda;
+}
 
-private:
-    std::shared_ptr<ArendaRepository> repository_;
-    std::vector<std::shared_ptr<Arenda>> activeArendas_;   // храним все аренды, созданные через этот сервис
-};
+void ArendaService::closeArenda(std::shared_ptr<Arenda> arenda)
+{
+    if (!arenda)
+        throw std::invalid_argument("Arenda is null");
+    arenda->close();
+}
+
+void ArendaService::issueArenda(int personId, int copyId)
+{
+    auto person = std::make_shared<Person>(personId, "Test User", Email("test@example.com"));
+    person->addRole(std::make_shared<ReaderRole>());
+
+    auto copy = std::make_shared<Copy>(copyId);
+
+    createArenda(person, copy);
+}
