@@ -8,6 +8,7 @@ public:
     virtual ~Role() = default;
     virtual std::string getName() const = 0;
     virtual bool canTakeBooks() const;
+    virtual int getDefaultArendaDays() const = 0;
 };
 
 // Роль "Читатель" – может брать книги
@@ -22,6 +23,10 @@ public:
     {
         return true;
     }
+    int getDefaultArendaDays() const override
+    {
+        return 100;
+    }
 };
 
 // Роль "Библиотекарь" – по умолчанию НЕ может брать книги
@@ -32,7 +37,10 @@ public:
     {
         return "Bibliotekar";
     }
-    // canTakeBooks() наследуется от Role (возвращает false)
+    int getDefaultArendaDays() const override
+    {
+        return 0;
+    }
 };
 
 // Роль "Администратор" – по умолчанию НЕ может брать книги
@@ -43,7 +51,10 @@ public:
     {
         return "Administrator";
     }
-    // canTakeBooks() наследуется от Role (возвращает false)
+    int getDefaultArendaDays() const override
+    {
+        return 0;
+    }
 };
 
 // Роль "Гость" – не может брать книги
@@ -54,4 +65,5 @@ public:
     {
         return "Guest";
     }
+    int getDefaultArendaDays() const override { return 0; }
 };

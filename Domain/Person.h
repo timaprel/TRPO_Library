@@ -17,6 +17,7 @@ public:
     bool hasRole(const std::string& roleName) const;
     void changeEmail(Email& newEmail);      
     bool canTakeBooks() const;
+    int getMaxArendaDays() const;
 
 private:
     int id_;

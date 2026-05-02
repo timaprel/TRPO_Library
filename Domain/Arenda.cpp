@@ -13,12 +13,16 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
         throw std::invalid_argument("Person cannot be null!");
     if (!copy_)
         throw std::invalid_argument("Copy cannot be null!");
-    if (!person_->canTakeBooks())
-        throw std::logic_error("Person cannot take books");
+
+    int days = person_->getMaxArendaDays();
+    if (days <= 0)
+        throw std::logic_error("Person cannot take books (no valid rental period)");
+
     if (!copy_->isAvailable())
         throw std::logic_error("Copy is not available");
 
     copy_->markAsArenda(); // помечаем экземпляр как занятый
+    dueDate_ = startDate_ + std::chrono::hours(24 * days);
 }
 
 std::shared_ptr<Person> Arenda::getPerson() const
@@ -61,7 +65,5 @@ bool Arenda::isOverdue() const
     if (status_ == ArendaStatus::Closed)
         return false;
 
-    auto now = std::chrono::system_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::hours>(now - startDate_);
-    return duration.count() > 24 * DefaultArendaDays;
+    return std::chrono::system_clock::now() > dueDate_;
 }

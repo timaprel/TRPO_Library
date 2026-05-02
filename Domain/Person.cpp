@@ -1,6 +1,7 @@
 #include "Person.h"
 #include <stdexcept>
 #include <utility>
+#include <algorithm>
 
 Person::Person(int id, std::string fullName, Email email)
     : id_(id),
@@ -54,4 +55,17 @@ bool Person::canTakeBooks() const
             return true;
     }
     return false;
+}
+
+int Person::getMaxArendaDays() const
+{
+    int maxDays = 0;
+    for (const auto &role : roles_)
+    {
+        if (role->canTakeBooks())
+        {
+            maxDays = std::max(maxDays, role->getDefaultArendaDays());
+        }
+    }
+    return maxDays;
 }
