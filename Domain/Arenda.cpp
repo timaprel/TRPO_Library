@@ -14,11 +14,18 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
     if (!copy_)
         throw std::invalid_argument("Copy cannot be null!");
 
+    // Эти проверки и маркировка теперь выполняются в ArendaService
+    // if (!person_->canTakeBooks())
+    //     throw std::logic_error("Person cannot take books!");
+    // if (!copy_->isAvailable())
+    //     throw std::logic_error("Copy is not available!");
+
     int days = person_->getMaxArendaDays();
     if (days <= 0)
         throw std::logic_error("Person cannot take books (no valid rental period)");
 
     dueDate_ = startDate_ + std::chrono::hours(24 * days);
+    // copy_->markAsArenda();   // маркировка в сервисе
 }
 
 std::shared_ptr<Person> Arenda::getPerson() const
@@ -48,6 +55,7 @@ void Arenda::close()
 
     status_ = ArendaStatus::Closed;
     endDate_ = std::chrono::system_clock::now();
+    // copy_->markAsVozvrat();   // возврат копии в сервисе
 }
 
 std::chrono::system_clock::time_point Arenda::getEndDate() const
