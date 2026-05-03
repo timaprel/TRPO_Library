@@ -16,15 +16,12 @@ std::shared_ptr<Arenda> ArendaService::createArenda(std::shared_ptr<Person> pers
     if (!copy)
         throw std::invalid_argument("Copy is null");
 
-    if (person->hasOverdueArendas())
+    // Проверка просроченных книг через репозиторий
+    if (hasOverdueArendas(person->getId()))
         throw std::logic_error("User has overdue book/books!");
 
     auto arenda = std::make_shared<Arenda>(person, copy);
-
-    person->addArenda(arenda);
-
     repository_->save(arenda);
-
     return arenda;
 }
 
@@ -35,12 +32,13 @@ void ArendaService::closeArenda(std::shared_ptr<Arenda> arenda)
     arenda->close();
 }
 
-void ArendaService::issueArenda(int personId, int copyId)
+bool ArendaService::hasOverdueArendas(int personId)
 {
-    auto person = std::make_shared<Person>(personId, "Test User", Email("test@example.com"));
-    person->addRole(std::make_shared<ReaderRole>());
-
-    auto copy = std::make_shared<Copy>(copyId);
-
-    createArenda(person, copy);
+    auto arendas = repository_->findActiveByPerson(personId);
+    for (const auto &arenda : arendas)
+    {
+        if (arenda->isOverdue())
+            return true;
+    }
+    return false;
 }

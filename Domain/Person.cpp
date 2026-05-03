@@ -1,5 +1,5 @@
 #include "Person.h"
-#include "Arenda.h"
+// #include "Arenda.h"
 #include <stdexcept>
 #include <utility>
 #include <algorithm>
@@ -84,15 +84,15 @@ int Person::getMaxActiveArendas() const
     return maxActive;
 }
 
-void Person::addArenda(std::shared_ptr<Arenda> arenda)
-{
-    arendas_.push_back(arenda);
-}
+// void Person::addArenda(std::shared_ptr<Arenda> arenda)
+//{
+//    arendas_.push_back(arenda);
+//}
 
-bool Person::hasOverdueArendas() const
-{
-    for (const auto& arenda : arendas_)
-        if (arenda->isOverdue())
-            return true;
-    return false;
-}
+//bool Person::hasOverdueArendas() const
+//{
+//    for (const auto& arenda : arendas_)
+//        if (arenda->isOverdue())
+//            return true;
+//    return false;
+//}

@@ -5,7 +5,7 @@
 #include "Role.h"
 #include "Email.h"
 
-class Arenda;
+// class Arenda;
 
 class Role;
 class Person
@@ -22,13 +22,13 @@ public:
     int getMaxArendaDays() const;
     int getMaxActiveArendas() const;
 
-    void addArenda(std::shared_ptr<Arenda> arenda);
-    bool hasOverdueArendas() const;
+    // void addArenda(std::shared_ptr<Arenda> arenda);
+    // bool hasOverdueArendas() const;
 
 private:
     int id_;
     std::string fullName_;
     Email email_;
     std::vector<std::shared_ptr<Role>> roles_;
-    std::vector<std::shared_ptr<Arenda>> arendas_;
+    // std::vector<std::shared_ptr<Arenda>> arendas_;
 };
