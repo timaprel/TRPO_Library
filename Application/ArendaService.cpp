@@ -22,6 +22,11 @@ std::shared_ptr<Arenda> ArendaService::createArenda(std::shared_ptr<Person> pers
     if (active.size() >= static_cast<size_t>(person->getMaxActiveArendas()))
         throw std::logic_error("Arenda's Limit exceeded!");
 
+    if (!copy->isAvailable())
+        throw std::logic_error("Copy is not available");
+
+    copy->markAsArenda();
+
     auto arenda = std::make_shared<Arenda>(person, copy);
     repository_->save(arenda);
     return arenda;
@@ -31,14 +36,16 @@ void ArendaService::closeArenda(std::shared_ptr<Arenda> arenda)
 {
     if (!arenda)
         throw std::invalid_argument("Arenda is null");
+
     arenda->close();
+    arenda->getCopy()->markAsVozvrat();
 }
 
 bool ArendaService::hasOverdueArendas(int personId)
 {
     auto arendas = repository_->findActiveByPerson(personId);
-    for (const auto &arenda : arendas)
-        if (arenda->isOverdue())
+    for (const auto &a : arendas)
+        if (a->isOverdue())
             return true;
     return false;
 }

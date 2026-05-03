@@ -18,10 +18,6 @@ Arenda::Arenda(std::shared_ptr<Person> person, std::shared_ptr<Copy> copy)
     if (days <= 0)
         throw std::logic_error("Person cannot take books (no valid rental period)");
 
-    if (!copy_->isAvailable())
-        throw std::logic_error("Copy is not available");
-
-    copy_->markAsArenda(); // помечаем экземпляр как занятый
     dueDate_ = startDate_ + std::chrono::hours(24 * days);
 }
 
@@ -52,7 +48,6 @@ void Arenda::close()
 
     status_ = ArendaStatus::Closed;
     endDate_ = std::chrono::system_clock::now();
-    copy_->markAsVozvrat(); // возвращаем экземпляр в доступные
 }
 
 std::chrono::system_clock::time_point Arenda::getEndDate() const
