@@ -35,8 +35,13 @@ std::vector<std::shared_ptr<Arenda>> InMemoryArendaRepository::findOverdueByPers
     std::vector<std::shared_ptr<Arenda>> res;
     for (const auto &arenda : arendas_)
     {
-        if (arenda->getPerson()->getId() == personId && arenda->isActive() && arenda->isOverdue())
+        if (arenda->getPerson() &&
+            arenda->getPerson()->getId() == personId &&
+            arenda->isActive() &&
+            arenda->isOverdue())
+        {
             res.push_back(arenda);
+        }
     }
     return res;
 }

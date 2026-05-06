@@ -11,7 +11,8 @@ public:
     virtual bool canCreateArenda(
         const Person &person,
         const Copy &copy,
-        const std::vector<std::shared_ptr<Arenda>> &active) const = 0;
+        const std::vector<std::shared_ptr<Arenda>> &active,
+        const std::vector<std::shared_ptr<Arenda>> &overdue) const = 0;
     virtual ~ArendaPolicy() = default;
 };
 
@@ -21,5 +22,6 @@ public:
     bool canCreateArenda(
         const Person &person,
         const Copy &copy,
-        const std::vector<std::shared_ptr<Arenda>> &active) const override;
+        const std::vector<std::shared_ptr<Arenda>> &active,
+        const std::vector<std::shared_ptr<Arenda>> &overdue) const override;
 };
