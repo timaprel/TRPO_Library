@@ -18,23 +18,23 @@ int main()
     {
         auto repository = std::make_shared<InMemoryArendaRepository>();
 
-        auto policy = std::make_shared<DefaultArendaPolicy>();
+        auto compositePolicy = std::make_shared<CompositeArendaPolicy>();
 
-        ArendaService service(repository, policy);
+        compositePolicy->addPolicy(std::make_shared<AvailabilityPolicy>());
+        compositePolicy->addPolicy(std::make_shared<MaxActiveArendasPolicy>());
+        compositePolicy->addPolicy(std::make_shared<OverduePolicy>());
+
+        ArendaService service(repository, compositePolicy);
 
         auto reader = std::make_shared<Person>(1, "Denis Lobov", Email("ldenis@petrsu.ru"));
-
         reader->addRole(std::make_shared<ReaderRole>());
 
         std::vector<std::string> authors = {"Эрик Эванс", "Мартин Фаулер", "Вон Вернон"};
         auto book = std::make_shared<Book>("Domain-Driven Design", ISBN("978-5-6040724-9-3"), authors, 2011);
-
         auto copy = std::make_shared<Copy>(1, book);
 
         if (copy->isAvailable())
             std::cout << "Copy is available\n";
-        else
-            std::cout << "Copy is not available\n";
 
         auto arenda = service.createArenda(reader, copy);
 
